@@ -2,19 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import requests
 
 app = Flask(__name__)
-app.secret_key = "sua_chave_secreta_aqui"  # necessário para usar session
 
 API_BASE = "https://delivery-api-i9pg.onrender.com"
 
-# -----------------------
-# Tela de Login
-# -----------------------
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-        # Faz login na API
         r = requests.post(f"{API_BASE}/sessions", json={"email": email, "password": password})
         if r.status_code == 200:
             token = r.json().get("token")
@@ -25,9 +20,6 @@ def login():
     return render_template("login.html")
 
 
-# -----------------------
-# Tela de Cadastro
-# -----------------------
 @app.route("/cadastro", methods=["GET", "POST"])
 def cadastro():
     if request.method == "POST":
@@ -43,9 +35,6 @@ def cadastro():
     return render_template("cadastro.html")
 
 
-# -----------------------
-# Tela Home (lista produtos)
-# -----------------------
 @app.route("/home")
 def home():
     token = session.get("token")
@@ -68,7 +57,6 @@ def criar_pedido():
         flash("Você precisa fazer login.")
         return redirect(url_for("login"))
 
-    # Montar lista de items
     items = []
     for key, value in request.form.items():
         if key.startswith("quantidade_"):
@@ -149,7 +137,6 @@ def criar_produto():
         return redirect(url_for("login"))
 
     if request.method == "POST":
-        # Captura os dados do formulário
         nome = request.form.get("name")
         descricao = request.form.get("description")
         preco = request.form.get("price")
@@ -164,10 +151,9 @@ def criar_produto():
 
         headers = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {token}"  # se necessário
+            "Authorization": f"Bearer {token}"  
         }
 
-        # Faz o POST na sua API
         url = f"{API_BASE}/products"
         r = requests.post(url, json=payload, headers=headers)
 
@@ -178,13 +164,9 @@ def criar_produto():
             flash(f"❌ Erro ao criar produto: {r.status_code} - {r.text}")
             return redirect(url_for("criar_produto"))
 
-    # Se método GET apenas exibe o formulário
     return render_template("criar_produto.html")
 
 
-# -----------------------
-# Logout
-# -----------------------
 @app.route("/logout")
 def logout():
     session.clear()
