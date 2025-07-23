@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - Produtos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #f9f9f9, #e3f2fd);
+      color: #333;
+    }
+    header {
+      background: #1976d2;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+    a.logout {
+      color: #fff;
+      background: #ef5350;
+      padding: 8px 12px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      float: right;
+      margin-top: -35px;
+      margin-right: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .produto {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .produto:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .produto img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .produto-content {
+      padding: 15px;
+    }
+    .produto h2 {
+      margin-top: 0;
+      font-size: 1.4em;
+      color: #1976d2;
+    }
+    .produto p {
+      margin: 10px 0;
+    }
+    .preco {
+      color: #388e3c;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+    .quantidade {
+      width: 60px;
+      padding: 5px;
+      margin-top: 10px;
+      font-size: 1em;
+    }
+    .finalizar {
+      display: block;
+      margin: 30px auto;
+      padding: 15px 30px;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .finalizar:hover {
+      background: #1565c0;
+    }
+
+    a.ver-pedidos {
+      display: inline-block;
+      background: #fbc02d;
+      color: #000;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 5px;
+      text-decoration: none;
+      margin-top: -35px;
+      margin-left: 20px;
+      float: left;
+      transition: background 0.3s;
+    }
+    a.ver-pedidos:hover {
+      background: #f9a825;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #1976d2;
+      color: white;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="{{ url_for('criar_produto') }}" > < </a>
+    <header>
+  <h1>🍔 Delivery - Produtos</h1>
+  <a href="{{ url_for('logout') }}" class="logout">Sair</a>
+  <a href="{{ url_for('pedidos') }}" class="ver-pedidos">📦 Meus Pedidos</a>
+</header>
+
+  </header>
+
+  <form method="POST" action="{{ url_for('criar_pedido') }}">
+    <div class="container">
+      {% for p in produtos %}
+        <div class="produto">
+          <img src="{{ p.imageUrl }}" alt="{{ p.name }}">
+          <div class="produto-content">
+            <h2>{{ p.name }}</h2>
+            <p>{{ p.description }}</p>
+            <p class="preco">R$ {{ '%.2f'|format(p.price) }}</p>
+            <label>Quantidade:</label>
+            <input class="quantidade" type="number" name="quantidade_{{ p.id }}" min="0" value="0">
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <button type="submit" class="finalizar">🛒 Finalizar Compra</button>
+  </form>
+
+  <footer>
+    <p>&copy; 2025 Delivery App. Todos os direitos reservados.</p>
+  </footer>
+</body>
+</html>
