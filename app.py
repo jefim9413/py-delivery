@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import requests
 
 app = Flask(__name__)
+ 
+app.secret_key = "sua_chave_secreta"
 
 API_BASE = "https://delivery-api-i9pg.onrender.com"
 
