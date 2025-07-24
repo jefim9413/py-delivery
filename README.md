@@ -25,7 +25,7 @@ Este é um frontend simples em **Flask** para consumir uma API RESTful de delive
 
 1. **Clone o repositório**
 ```bash
-git clone https://github.com/seuusuario/seuprojeto.git
+git clone https://github.com/jefim9413/py-delivery.git
 cd seuprojeto
 ```
 
